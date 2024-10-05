@@ -62,5 +62,54 @@ network:
 {% endif %}
 {% endfor %}
 {% endif %}
+{% if netplan_vlans is defined %}
+  vlans:
+{% for vlan in netplan_vlans %}
+    {{ vlan['vlan_name'] }}:
+      id: {{ vlan['id'] }}
+      link: {{ vlan['link'] }}
+{% if vlan['gateway4'] is defined %}
+      routes:
+        - to: "default"
+          via: "{{ vlan['gateway4'] }}"
+{% if vlan['routes'] is defined %}
+{% for route in vlan['routes']%}
+        - to: "{{ route.to }}"
+          via: "{{ route.via }}"
+{% endfor %}
+{% endif %}
+{% endif %}
+{% if vlan['gateway4'] is not defined %}
+{% if vlan['routes'] is defined %}
+      routes:
+{% for route in vlan['routes']%}
+        - to: "{{ route.to }}"
+          via: "{{ route.via }}"
+{% endfor %}
+{% endif %}
+{% endif %}
+{% if vlan['addresses'] is defined %}
+      addresses:
+{%for addresses in vlan['addresses'] %}
+        - "{{ addresses }}"
+{% endfor %}
+{% endif %}
+{% if vlan['nameservers'] is defined %}
+      nameservers:
+{% if vlan['nameservers']['addresses'] is defined %}
+        addresses:
+{%for addresses in vlan['nameservers']['addresses'] %}
+          - "{{ addresses }}"
+{% endfor %}
+{% endif %}
+{% endif %}
+{% if vlan['nameservers']['search'] is defined %}
+        search:
+{%for search in vlan['nameservers']['search'] %}
+          - "{{ search }}"
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
 
 ...
