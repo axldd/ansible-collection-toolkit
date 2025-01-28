@@ -17,5 +17,6 @@ netplan_configuration_file_path: "{{ (netplan_configuration_dir, netplan_configu
 # Packages to be installed
 netplan_packages:
   - "netplan.io"
+  - "systemd-resolved "
 
 ...
