@@ -13,7 +13,6 @@ network:
 {% if netplan_ethernets is defined %}
   ethernets:
 {% for ethernet in netplan_ethernets %}
-{% if ethernet['interface_name'] is defined %}
     {{ ethernet['interface_name'] }}:
 {% if ethernet['dhcp4'] is defined %}
       dhcp4: "{{ ethernet['dhcp4'] }}"
@@ -23,7 +22,7 @@ network:
         - to: "default"
           via: "{{ ethernet['gateway4'] }}"
 {% if ethernet['routes'] is defined %}
-{% for route in ethernet['routes']%}
+{% for route in ethernet['routes'] %}
         - to: "{{ route.to }}"
           via: "{{ route.via }}"
 {% endfor %}
@@ -32,7 +31,7 @@ network:
 {% if ethernet['gateway4'] is not defined %}
 {% if ethernet['routes'] is defined %}
       routes:
-{% for route in ethernet['routes']%}
+{% for route in ethernet['routes'] %}
         - to: "{{ route.to }}"
           via: "{{ route.via }}"
 {% endfor %}
@@ -40,7 +39,7 @@ network:
 {% endif %}
 {% if ethernet['addresses'] is defined %}
       addresses:
-{%for addresses in ethernet['addresses'] %}
+{% for addresses in ethernet['addresses'] %}
         - "{{ addresses }}"
 {% endfor %}
 {% endif %}
@@ -48,17 +47,76 @@ network:
       nameservers:
 {% if ethernet['nameservers']['addresses'] is defined %}
         addresses:
-{%for addresses in ethernet['nameservers']['addresses'] %}
+{% for addresses in ethernet['nameservers']['addresses'] %}
           - "{{ addresses }}"
 {% endfor %}
 {% endif %}
 {% if ethernet['nameservers']['search'] is defined %}
         search:
-{%for search in ethernet['nameservers']['search'] %}
+{% for search in ethernet['nameservers']['search'] %}
           - "{{ search }}"
 {% endfor %}
 {% endif %}
 {% endif %}
+{% endfor %}
+{% endif %}
+{% if netplan_bridges is defined %}
+  bridges:
+{% for bridge in netplan_bridges %}
+    {{ bridge['bridge_name'] }}:
+      interfaces:
+{% for intf in bridge['interfaces'] %}
+        - "{{ intf }}"
+{% endfor %}
+{% if bridge['dhcp4'] is defined %}
+      dhcp4: "{{ bridge['dhcp4'] }}"
+{% endif %}
+{% if bridge['gateway4'] is defined %}
+      routes:
+        - to: "default"
+          via: "{{ bridge['gateway4'] }}"
+{% if bridge['routes'] is defined %}
+{% for route in bridge['routes'] %}
+        - to: "{{ route.to }}"
+          via: "{{ route.via }}"
+{% endfor %}
+{% endif %}
+{% endif %}
+{% if bridge['gateway4'] is not defined %}
+{% if bridge['routes'] is defined %}
+      routes:
+{% for route in bridge['routes'] %}
+        - to: "{{ route.to }}"
+          via: "{{ route.via }}"
+{% endfor %}
+{% endif %}
+{% endif %}
+{% if bridge['addresses'] is defined %}
+      addresses:
+{% for address in bridge['addresses'] %}
+        - "{{ address }}"
+{% endfor %}
+{% endif %}
+{% if bridge['nameservers'] is defined %}
+      nameservers:
+{% if bridge['nameservers']['addresses'] is defined %}
+        addresses:
+{% for address in bridge['nameservers']['addresses'] %}
+          - "{{ address }}"
+{% endfor %}
+{% endif %}
+{% if bridge['nameservers']['search'] is defined %}
+        search:
+{% for search in bridge['nameservers']['search'] %}
+          - "{{ search }}"
+{% endfor %}
+{% endif %}
+{% endif %}
+{% if bridge['parameters'] is defined %}
+      parameters:
+{% for key, value in bridge['parameters'].items() %}
+        {{ key }}: {{ value }}
+{% endfor %}
 {% endif %}
 {% endfor %}
 {% endif %}
@@ -73,7 +131,7 @@ network:
         - to: "default"
           via: "{{ vlan['gateway4'] }}"
 {% if vlan['routes'] is defined %}
-{% for route in vlan['routes']%}
+{% for route in vlan['routes'] %}
         - to: "{{ route.to }}"
           via: "{{ route.via }}"
 {% endfor %}
@@ -82,7 +140,7 @@ network:
 {% if vlan['gateway4'] is not defined %}
 {% if vlan['routes'] is defined %}
       routes:
-{% for route in vlan['routes']%}
+{% for route in vlan['routes'] %}
         - to: "{{ route.to }}"
           via: "{{ route.via }}"
 {% endfor %}
@@ -90,7 +148,7 @@ network:
 {% endif %}
 {% if vlan['addresses'] is defined %}
       addresses:
-{%for addresses in vlan['addresses'] %}
+{% for addresses in vlan['addresses'] %}
         - "{{ addresses }}"
 {% endfor %}
 {% endif %}
@@ -98,16 +156,16 @@ network:
       nameservers:
 {% if vlan['nameservers']['addresses'] is defined %}
         addresses:
-{%for addresses in vlan['nameservers']['addresses'] %}
+{% for addresses in vlan['nameservers']['addresses'] %}
           - "{{ addresses }}"
 {% endfor %}
 {% endif %}
-{% endif %}
 {% if vlan['nameservers']['search'] is defined %}
         search:
-{%for search in vlan['nameservers']['search'] %}
+{% for search in vlan['nameservers']['search'] %}
           - "{{ search }}"
 {% endfor %}
+{% endif %}
 {% endif %}
 {% endfor %}
 {% endif %}
