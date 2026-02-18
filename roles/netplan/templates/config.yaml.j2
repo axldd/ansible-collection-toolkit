@@ -15,10 +15,10 @@ network:
 {% for ethernet in netplan_ethernets %}
     {{ ethernet['interface_name'] }}:
 {% if ethernet['dhcp4'] is defined %}
-      dhcp4: "{{ ethernet['dhcp4'] }}"
+      dhcp4: {{ ethernet['dhcp4'] | bool  | lower }}
 {% endif %}
 {% if ethernet['dhcp6'] is defined %}
-      dhcp6: "{{ ethernet['dhcp6'] }}"
+      dhcp6: {{ ethernet['dhcp6'] | bool | lower }}
 {% endif %}
 {% if ethernet['gateway4'] is defined %}
       routes:
@@ -72,10 +72,10 @@ network:
         - "{{ intf }}"
 {% endfor %}
 {% if bridge['dhcp4'] is defined %}
-      dhcp4: "{{ bridge['dhcp4'] }}"
+      dhcp4: {{ bridge['dhcp4'] | bool | lower }}
 {% endif %}
 {% if bridge['dhcp6'] is defined %}
-      dhcp6: "{{ bridge['dhcp6'] }}"
+      dhcp6: {{ bridge['dhcp6'] | bool | lower }}
 {% endif %}
 {% if bridge['gateway4'] is defined %}
       routes:
