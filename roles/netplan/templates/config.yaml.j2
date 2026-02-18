@@ -18,7 +18,7 @@ network:
       dhcp4: "{{ ethernet['dhcp4'] }}"
 {% endif %}
 {% if ethernet['dhcp6'] is defined %}
-      dhcp4: "{{ ethernet['dhcp6'] }}"
+      dhcp6: "{{ ethernet['dhcp6'] }}"
 {% endif %}
 {% if ethernet['gateway4'] is defined %}
       routes:
@@ -75,7 +75,7 @@ network:
       dhcp4: "{{ bridge['dhcp4'] }}"
 {% endif %}
 {% if bridge['dhcp6'] is defined %}
-      dhcp4: "{{ bridge['dhcp6'] }}"
+      dhcp6: "{{ bridge['dhcp6'] }}"
 {% endif %}
 {% if bridge['gateway4'] is defined %}
       routes:
