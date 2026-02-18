@@ -20,6 +20,9 @@ network:
 {% if ethernet['dhcp6'] is defined %}
       dhcp6: {{ ethernet['dhcp6'] | bool | lower }}
 {% endif %}
+{% if ethernet['mtu'] is defined %}
+      mtu: {{ ethernet['mtu'] }}
+{% endif %}
 {% if ethernet['gateway4'] is defined %}
       routes:
         - to: "default"
@@ -76,6 +79,9 @@ network:
 {% endif %}
 {% if bridge['dhcp6'] is defined %}
       dhcp6: {{ bridge['dhcp6'] | bool | lower }}
+{% endif %}
+{% if ethernet['mtu'] is defined %}
+      mtu: {{ ethernet['mtu'] }}
 {% endif %}
 {% if bridge['gateway4'] is defined %}
       routes:
